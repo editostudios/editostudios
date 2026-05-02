@@ -366,37 +366,131 @@ nav {
 .work-title { font-family: var(--serif); font-weight: 300; font-size: clamp(2rem, 3.5vw, 3rem); line-height: 1.08; }
 .work-title em { font-style: italic; color: var(--grey2); }
 
-
-.work-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
-  background: var(--line);
-}
-.work-tile {
-  aspect-ratio: 4/3;
-  background: var(--bg2);
-  position: relative;
+/* ── REEL CAROUSEL ── */
+/* Constrain the carousel to a sensible max-width on wide screens, centered */
+.reel-stage-wrap {
+  max-width: 1100px;
+  margin: 0 auto;
   overflow: hidden;
-  transition: transform 0.45s ease;
+  position: relative;
 }
-.work-tile:hover { transform: scale(1.02); z-index: 1; }
-.work-tile-overlay {
+.reel-stage {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  /* fade edges */
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+}
+.reel-track {
+  display: flex;
+  gap: 20px;
+  width: max-content;
+  will-change: transform;
+  cursor: none;
+}
+/* Each reel card — 9:16 portrait */
+.reel-card {
+  flex: 0 0 auto;
+  width: 220px;
+  height: 391px; /* 9:16 */
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.reel-card.active-reel {
+  border-color: rgba(240,237,230,0.25);
+  box-shadow: 0 0 32px rgba(240,237,230,0.06);
+}
+.reel-card video {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+}
+/* Placeholder gradient when no video src */
+.reel-placeholder {
   position: absolute; inset: 0;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  padding: 2rem;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
 }
-.tile-num { position: absolute; top: 1.8rem; right: 1.8rem; font-size: 11px; letter-spacing: 0.15em; color: var(--grey); font-weight: 400; font-family: var(--sans); }
-.tile-label { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--grey); font-weight: 400; margin-bottom: 0.5rem; }
-.tile-name { font-family: var(--serif); font-weight: 300; font-size: 1.2rem; color: var(--ink); line-height: 1.2; }
-.tile-texture {
-  position: absolute; inset: 0;
+.reel-placeholder .rp-num {
+  font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--grey); font-family: var(--sans); font-weight: 400;
+}
+.reel-placeholder .rp-name {
+  font-family: var(--serif); font-weight: 300; font-size: 1rem;
+  color: var(--ink); text-align: center; padding: 0 1rem; line-height: 1.3;
+}
+.reel-placeholder .rp-label {
+  font-size: 9.5px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--grey2); font-weight: 400;
+}
+/* line-texture overlay */
+.reel-texture {
+  position: absolute; inset: 0; pointer-events: none; border-radius: 14px;
   background-image: repeating-linear-gradient(
     0deg, transparent, transparent 39px,
-    rgba(240,237,230,0.025) 39px, rgba(240,237,230,0.025) 40px
+    rgba(240,237,230,0.018) 39px, rgba(240,237,230,0.018) 40px
   );
+}
+/* bottom info bar */
+.reel-info {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 2.5rem 1.1rem 1.1rem;
+  background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, transparent 100%);
+  display: flex; flex-direction: column; gap: 3px;
+}
+.reel-info .ri-label { font-size: 9px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--grey2); font-weight: 400; }
+.reel-info .ri-name  { font-family: var(--serif); font-weight: 300; font-size: 0.92rem; color: var(--ink); line-height: 1.2; }
+/* sound icon */
+.reel-sound-icon {
+  position: absolute; top: 12px; right: 12px;
+  width: 28px; height: 28px; border-radius: 50%;
+  background: rgba(0,0,0,0.5); backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity 0.25s ease;
+  pointer-events: none;
+}
+.reel-card.active-reel .reel-sound-icon { opacity: 1; }
+.reel-sound-icon svg { width: 13px; height: 13px; fill: var(--ink); }
+
+/* Custom cursor for carousel zone */
+.reel-stage-wrap {
+  position: relative;
+  cursor: none;
+}
+.reel-cursor {
+  position: fixed;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: rgba(240,237,230,0.12);
+  border: 1px solid rgba(240,237,230,0.3);
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: opacity 0.2s ease, transform 0.15s ease;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0;
+}
+.reel-cursor.visible { opacity: 1; }
+.reel-cursor.paused { background: rgba(240,237,230,0.18); transform: translate(-50%,-50%) scale(1.15); }
+.reel-cursor svg { width: 12px; height: 12px; fill: var(--ink); opacity: 0.85; }
+
+/* Mobile: single reel centered, half-visible neighbours */
+@media (max-width: 768px) {
+  .reel-stage {
+    -webkit-mask-image: none; mask-image: none;
+  }
+  .reel-track { gap: 12px; }
+  .reel-card { width: 72vw; height: calc(72vw * 16/9); border-radius: 12px; }
+  .reel-sound-icon { opacity: 1 !important; }
 }
 
 /* CONTACT FORM */
@@ -661,7 +755,6 @@ footer {
   .srv-num { display: none; }
   .srv-desc { text-align: left; font-size: 0.78rem; }
   .about-grid { grid-template-columns: 1fr; gap: 3rem; }
-  .work-grid { grid-template-columns: 1fr 1fr; }
   .contact-inner { grid-template-columns: 1fr; gap: 4rem; }
   .contact-meta-stacked { flex-direction: row; flex-wrap: wrap; gap: 1.5rem 3rem; }
   footer { padding: 2rem 1.5rem; }
@@ -670,7 +763,6 @@ footer {
   .modal-box { padding: 2rem; }
 }
 @media (max-width: 540px) {
-  .work-grid { grid-template-columns: 1fr; }
   .stats-row { gap: 2rem; flex-wrap: wrap; }
   .hero-actions { gap: 1.5rem; }
 }
@@ -847,57 +939,115 @@ footer {
     <div class="work-header">
       <h2 class="work-title reveal">Selected<br><em>work.</em></h2>
     </div>
-    <div class="work-grid">
-      <div class="work-tile reveal d1">
-        <div class="tile-texture"></div>
-        <div class="work-tile-overlay">
-          <span class="tile-num">01</span>
-          <p class="tile-label">Short-Form</p>
-          <p class="tile-name">Brand Reel Production</p>
-        </div>
-      </div>
-      <div class="work-tile reveal d2">
-        <div class="tile-texture"></div>
-        <div class="work-tile-overlay">
-          <span class="tile-num">02</span>
-          <p class="tile-label">Long-Form</p>
-          <p class="tile-name">YouTube Tutorial Series</p>
-        </div>
-      </div>
-      <div class="work-tile reveal d3">
-        <div class="tile-texture"></div>
-        <div class="work-tile-overlay">
-          <span class="tile-num">03</span>
-          <p class="tile-label">3D Animation</p>
-          <p class="tile-name">Product Visualisation</p>
-        </div>
-      </div>
-      <div class="work-tile reveal d2">
-        <div class="tile-texture"></div>
-        <div class="work-tile-overlay">
-          <span class="tile-num">04</span>
-          <p class="tile-label">Motion</p>
-          <p class="tile-name">Dynamic Motion Graphics</p>
-        </div>
-      </div>
-      <div class="work-tile reveal d3">
-        <div class="tile-texture"></div>
-        <div class="work-tile-overlay">
-          <span class="tile-num">05</span>
-          <p class="tile-label">Social</p>
-          <p class="tile-name">Multi-Platform Campaign</p>
-        </div>
-      </div>
-      <div class="work-tile reveal d4">
-        <div class="tile-texture"></div>
-        <div class="work-tile-overlay">
-          <span class="tile-num">06</span>
-          <p class="tile-label">Identity</p>
-          <p class="tile-name">Brand Visual System</p>
-        </div>
-      </div>
-    </div>
   </div>
+
+  <!-- REEL CAROUSEL — full bleed -->
+  <div class="reel-stage-wrap reveal">
+    <div class="reel-stage" id="reelStage">
+      <div class="reel-track" id="reelTrack">
+
+        <!-- Reel 01 -->
+        <div class="reel-card" data-idx="0">
+          <div class="reel-placeholder">
+            <span class="rp-num">01</span>
+            <span class="rp-name">Brand Reel Production</span>
+            <span class="rp-label">Short-Form</span>
+          </div>
+          <video src="" loop muted playsinline preload="metadata"></video>
+          <div class="reel-texture"></div>
+          <div class="reel-info">
+            <span class="ri-label">Short-Form</span>
+            <span class="ri-name">Brand Reel Production</span>
+          </div>
+          <div class="reel-sound-icon" title="Sound">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+          </div>
+        </div>
+
+        <!-- Reel 02 -->
+        <div class="reel-card" data-idx="1">
+          <div class="reel-placeholder">
+            <span class="rp-num">02</span>
+            <span class="rp-name">YouTube Tutorial Series</span>
+            <span class="rp-label">Long-Form</span>
+          </div>
+          <video src="" loop muted playsinline preload="metadata"></video>
+          <div class="reel-texture"></div>
+          <div class="reel-info">
+            <span class="ri-label">Long-Form</span>
+            <span class="ri-name">YouTube Tutorial Series</span>
+          </div>
+          <div class="reel-sound-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+          </div>
+        </div>
+
+        <!-- Reel 03 -->
+        <div class="reel-card" data-idx="2">
+          <div class="reel-placeholder">
+            <span class="rp-num">03</span>
+            <span class="rp-name">Product Visualisation</span>
+            <span class="rp-label">3D Animation</span>
+          </div>
+          <video src="" loop muted playsinline preload="metadata"></video>
+          <div class="reel-texture"></div>
+          <div class="reel-info">
+            <span class="ri-label">3D Animation</span>
+            <span class="ri-name">Product Visualisation</span>
+          </div>
+          <div class="reel-sound-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+          </div>
+        </div>
+
+        <!-- Reel 04 -->
+        <div class="reel-card" data-idx="3">
+          <div class="reel-placeholder">
+            <span class="rp-num">04</span>
+            <span class="rp-name">Dynamic Motion Graphics</span>
+            <span class="rp-label">Motion</span>
+          </div>
+          <video src="" loop muted playsinline preload="metadata"></video>
+          <div class="reel-texture"></div>
+          <div class="reel-info">
+            <span class="ri-label">Motion</span>
+            <span class="ri-name">Dynamic Motion Graphics</span>
+          </div>
+          <div class="reel-sound-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+          </div>
+        </div>
+
+        <!-- Reel 05 -->
+        <div class="reel-card" data-idx="4">
+          <div class="reel-placeholder">
+            <span class="rp-num">05</span>
+            <span class="rp-name">Multi-Platform Campaign</span>
+            <span class="rp-label">Social</span>
+          </div>
+          <video src="" loop muted playsinline preload="metadata"></video>
+          <div class="reel-texture"></div>
+          <div class="reel-info">
+            <span class="ri-label">Social</span>
+            <span class="ri-name">Multi-Platform Campaign</span>
+          </div>
+          <div class="reel-sound-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+          </div>
+        </div>
+
+      </div><!-- /reel-track -->
+    </div><!-- /reel-stage -->
+  </div><!-- /reel-stage-wrap -->
+
+  <!-- Custom cursor -->
+  <div class="reel-cursor" id="reelCursor">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" id="cursorIcon">
+      <!-- pause icon shown when hovering active reel, play icon otherwise -->
+      <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+    </svg>
+  </div>
+
 </section>
 
 <hr class="section-divider">
@@ -986,7 +1136,6 @@ footer {
 
 <script>
 
-
 // Scroll reveal
 const obs = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
@@ -1024,6 +1173,209 @@ function handleSubmit(e) {
   document.getElementById('contact-form').style.display = 'none';
   document.getElementById('form-success').style.display = 'block';
 }
+
+/* ══════════════════════════════════════
+   REEL CAROUSEL
+══════════════════════════════════════ */
+(function () {
+  const track       = document.getElementById('reelTrack');
+  const stage       = document.getElementById('reelStage');
+  const wrap        = document.querySelector('.reel-stage-wrap');
+  const cursor      = document.getElementById('reelCursor');
+  const cursorIcon  = document.getElementById('cursorIcon');
+  if (!track || !stage) return;
+
+  const SPEED       = 0.55;   // px per frame auto-scroll
+  const CARD_GAP    = 20;     // matches CSS gap
+
+  // ── helpers ──────────────────────────────
+  const isMobile = () => window.innerWidth <= 768;
+
+  // Clone cards for infinite loop
+  function buildLoop() {
+    // remove any previous clones
+    track.querySelectorAll('.reel-clone').forEach(c => c.remove());
+    const origCards = Array.from(track.querySelectorAll('.reel-card:not(.reel-clone)'));
+    // prepend + append copies
+    origCards.forEach(c => {
+      const cl = c.cloneNode(true);
+      cl.classList.add('reel-clone');
+      track.appendChild(cl);
+    });
+    origCards.forEach(c => {
+      const cl = c.cloneNode(true);
+      cl.classList.add('reel-clone');
+      track.insertBefore(cl, track.firstChild);
+    });
+  }
+
+  buildLoop();
+
+  // Total width of ONE set of cards
+  function setWidth() {
+    const cards = track.querySelectorAll('.reel-card:not(.reel-clone)');
+    let w = 0;
+    cards.forEach(c => { w += c.offsetWidth + CARD_GAP; });
+    return w;
+  }
+
+  let currentX  = 0;
+  let paused    = false;
+  let hoveredCard = null;
+  let rafId     = null;
+
+  // Start offset so we start from the cloned-prepend section
+  function initOffset() {
+    const sw = setWidth();
+    currentX = sw; // start at second "real" set
+    track.style.transform = `translateX(${-currentX}px)`;
+  }
+  initOffset();
+
+  // ── Auto scroll ──────────────────────────
+  function tick() {
+    if (!paused) {
+      currentX += SPEED;
+      const sw = setWidth();
+      if (currentX >= sw * 2) currentX -= sw;
+      track.style.transform = `translateX(${-currentX}px)`;
+    }
+    rafId = requestAnimationFrame(tick);
+  }
+  tick();
+
+  // ── Desktop hover ─────────────────────────
+  if (!('ontouchstart' in window)) {
+    stage.addEventListener('mouseenter', () => {
+      paused = true;
+      cursor.classList.add('visible');
+    });
+    stage.addEventListener('mouseleave', () => {
+      paused = false;
+      cursor.classList.remove('visible', 'paused');
+      if (hoveredCard) {
+        deactivateCard(hoveredCard);
+        hoveredCard = null;
+      }
+    });
+
+    stage.addEventListener('mousemove', e => {
+      // move custom cursor
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top  = e.clientY + 'px';
+
+      // find which card is under cursor
+      const el = document.elementFromPoint(e.clientX, e.clientY);
+      const card = el ? el.closest('.reel-card') : null;
+
+      if (card !== hoveredCard) {
+        if (hoveredCard) deactivateCard(hoveredCard);
+        hoveredCard = card || null;
+        if (hoveredCard) activateCard(hoveredCard);
+      }
+    });
+  }
+
+  function activateCard(card) {
+    card.classList.add('active-reel');
+    const vid = card.querySelector('video');
+    if (vid && vid.src && vid.src !== window.location.href) {
+      vid.muted = false;
+      vid.play().catch(() => { vid.muted = true; vid.play(); });
+    }
+    // cursor icon = pause (since video is playing)
+    setCursorIcon('pause');
+    cursor.classList.add('paused');
+  }
+
+  function deactivateCard(card) {
+    card.classList.remove('active-reel');
+    const vid = card.querySelector('video');
+    if (vid) { vid.pause(); vid.muted = true; }
+    setCursorIcon('pause');
+    cursor.classList.remove('paused');
+  }
+
+  function setCursorIcon(type) {
+    if (type === 'pause') {
+      cursorIcon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+    } else {
+      cursorIcon.innerHTML = '<path d="M8 5v14l11-7z"/>';
+    }
+  }
+
+  // ── Mobile: tap to toggle sound ───────────
+  if ('ontouchstart' in window) {
+    stage.addEventListener('click', e => {
+      const card = e.target.closest('.reel-card');
+      if (!card) return;
+      const vid = card.querySelector('video');
+      if (!vid) return;
+      if (vid.muted) {
+        // unmute this, mute all others
+        track.querySelectorAll('video').forEach(v => { v.muted = true; });
+        vid.muted = false;
+        card.classList.add('active-reel');
+      } else {
+        vid.muted = true;
+        card.classList.remove('active-reel');
+      }
+    });
+
+    // Auto-play all mobile videos muted
+    track.querySelectorAll('video').forEach(vid => {
+      vid.muted = true;
+      vid.loop  = true;
+      vid.setAttribute('playsinline', '');
+      if (vid.src && vid.src !== window.location.href) {
+        vid.play().catch(() => {});
+      }
+    });
+
+    // Center-snap scroll: track which card is centered, add class
+    const snapObs = new IntersectionObserver(entries => {
+      entries.forEach(en => {
+        if (en.intersectionRatio > 0.6) {
+          // approximate center card
+        }
+      });
+    }, { threshold: 0.6, root: stage });
+  }
+
+  // On desktop, auto-play all muted (for reel background feel)
+  if (!('ontouchstart' in window)) {
+    track.querySelectorAll('video').forEach(vid => {
+      vid.muted = true;
+      if (vid.src && vid.src !== window.location.href) {
+        vid.play().catch(() => {});
+      }
+    });
+  }
+
+  // ── Mobile snap-center highlighting ───────
+  // Use IntersectionObserver to detect which card is most centered
+  if ('ontouchstart' in window) {
+    const centerObs = new IntersectionObserver(entries => {
+      entries.forEach(en => {
+        if (en.intersectionRatio >= 0.65) {
+          track.querySelectorAll('.reel-card').forEach(c => c.classList.remove('active-reel'));
+          en.target.classList.add('active-reel');
+          // autoplay the centered one muted
+          const vid = en.target.querySelector('video');
+          if (vid) { vid.muted = true; vid.play().catch(()=>{}); }
+        }
+      });
+    }, { threshold: 0.65, root: stage });
+    track.querySelectorAll('.reel-card:not(.reel-clone)').forEach(c => centerObs.observe(c));
+  }
+
+  // Rebuild on resize
+  window.addEventListener('resize', () => {
+    buildLoop();
+    initOffset();
+  });
+
+})();
 </script>
 </body>
 </html>
