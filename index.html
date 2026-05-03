@@ -43,7 +43,7 @@ body {
   inset: -50%;
   width: 200%; height: 200%;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-  opacity: 0;
+  opacity: 0.025;
   pointer-events: none;
   z-index: 9990;
   animation: noiseShift 0.15s steps(1) infinite;
@@ -79,7 +79,6 @@ nav {
   height: 38px;
   width: auto;
   display: block;
-  mix-blend-mode: screen;
 }
 
 .nav-links { display: flex; gap: 2.8rem; list-style: none; }
@@ -286,7 +285,7 @@ nav {
   grid-template-columns: 2fr 1fr;
   gap: 4rem;
   align-items: end;
-  margin-bottom: 4rem;
+  margin-bottom: 5rem;
 }
 .services-title {
   font-family: var(--serif);
@@ -302,23 +301,98 @@ nav {
   line-height: 1.85;
   padding-bottom: 0.5rem;
 }
-.services-list { border-top: 1px solid var(--line); }
-.service-row {
+
+/* 3 CORE BLOCKS */
+.core-blocks {
   display: grid;
-  grid-template-columns: 3fr 1fr 4fr;
-  align-items: center;
-  padding: 1.7rem 0;
-  border-bottom: 1px solid var(--line);
-  transition: background 0.3s ease, padding 0.3s ease;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border-top: 1px solid var(--line);
+  margin-bottom: 5rem;
 }
-.service-row:hover {
-  background: var(--hover-bg);
-  padding-left: 1.2rem;
-  padding-right: 1.2rem;
+.core-block {
+  padding: 2.8rem 2.5rem 2.8rem 0;
+  border-right: 1px solid var(--line);
+  position: relative;
+  transition: background 0.4s ease;
 }
-.srv-num { font-size: 10px; letter-spacing: 0.2em; color: var(--grey); font-weight: 400; font-family: var(--sans); }
-.srv-name { font-family: var(--serif); font-size: 1.25rem; font-weight: 300; color: var(--ink); }
-.srv-desc { font-size: 0.83rem; font-weight: 300; color: var(--grey2); line-height: 1.75; text-align: right; }
+.core-block:last-child { border-right: none; padding-right: 0; padding-left: 2.5rem; }
+.core-block:nth-child(2) { padding-left: 2.5rem; }
+.core-block:hover { background: rgba(255,255,255,0.02); }
+.core-block-num {
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--grey);
+  font-weight: 400;
+  margin-bottom: 1.6rem;
+  display: block;
+}
+.core-block-title {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: 1.3rem;
+  line-height: 1.25;
+  color: var(--ink);
+  margin-bottom: 1rem;
+}
+.core-block-desc {
+  font-size: 0.84rem;
+  font-weight: 300;
+  color: var(--grey2);
+  line-height: 1.85;
+}
+
+/* WHAT WE DO BLOCKS */
+.what-we-do {
+  border-top: 1px solid var(--line);
+  padding-top: 4rem;
+}
+.what-we-do-label {
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--grey);
+  font-weight: 400;
+  margin-bottom: 3rem;
+}
+.wwd-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+}
+.wwd-item {
+  padding: 2rem 2.5rem 2rem 0;
+  border-right: 1px solid var(--line);
+  transition: background 0.4s ease;
+}
+.wwd-item:last-child { border-right: none; padding-right: 0; padding-left: 2.5rem; }
+.wwd-item:nth-child(2) { padding-left: 2.5rem; }
+.wwd-item:hover { background: rgba(255,255,255,0.015); }
+.wwd-title {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: 1.05rem;
+  color: var(--ink);
+  margin-bottom: 0.6rem;
+  line-height: 1.3;
+}
+.wwd-desc {
+  font-size: 0.82rem;
+  font-weight: 300;
+  color: var(--grey2);
+  line-height: 1.85;
+}
+
+@media (max-width: 960px) {
+  .core-blocks { grid-template-columns: 1fr; }
+  .core-block { border-right: none; border-bottom: 1px solid var(--line); padding: 2rem 0 !important; }
+  .core-block:last-child { border-bottom: none; }
+  .wwd-grid { grid-template-columns: 1fr; }
+  .wwd-item { border-right: none; border-bottom: 1px solid var(--line); padding: 1.6rem 0 !important; }
+  .wwd-item:last-child { border-bottom: none; }
+  .services-header { grid-template-columns: 1fr; gap: 2rem; }
+}
 
 /* ABOUT */
 #about { padding: 120px 0; }
@@ -400,7 +474,12 @@ nav {
   position: relative;
   background: var(--bg2);
   border: 1px solid var(--line);
-  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
+}
+.reel-card:hover {
+  border-color: rgba(240,237,230,0.2);
+  transform: translateY(-4px);
 }
 .reel-card.active-reel {
   border-color: rgba(240,237,230,0.25);
@@ -629,7 +708,7 @@ footer {
   flex-wrap: wrap;
   gap: 2rem;
 }
-.footer-logo-wrap img { height: 24px; width: auto; mix-blend-mode: screen; }
+.footer-logo-wrap { display: flex; flex-direction: column; gap: 4px; text-decoration: none; }
 .footer-logo-wrap img { height: 24px; width: auto; filter: brightness(0.7); }
 
 .footer-links { display: flex; gap: 2.5rem; flex-wrap: wrap; }
@@ -716,6 +795,119 @@ footer {
 .modal-body h3 { font-family: var(--serif); font-weight: 300; font-size: 1.1rem; color: var(--ink); margin: 2rem 0 0.6rem; }
 .modal-body p { margin-bottom: 1rem; }
 
+/* ── VIDEO LIGHTBOX ── */
+#reel-lightbox {
+  display: none;
+  position: fixed; inset: 0; z-index: 8000;
+  background: rgba(0,0,0,0.93);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+#reel-lightbox.open { display: flex; }
+.lb-inner {
+  display: flex;
+  gap: 4rem;
+  align-items: center;
+  max-width: 860px;
+  width: 100%;
+}
+.lb-video-col { flex: 0 0 auto; width: 260px; }
+.lb-video-wrap {
+  width: 260px;
+  aspect-ratio: 9/16;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #111;
+  position: relative;
+}
+.lb-video-wrap video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.lb-play-overlay {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+}
+.lb-play-btn {
+  width: 52px; height: 52px; border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.2);
+  display: flex; align-items: center; justify-content: center;
+  transition: transform 0.2s, background 0.2s;
+}
+.lb-play-btn:hover { transform: scale(1.08); background: rgba(255,255,255,0.25); }
+.lb-play-btn svg { width: 18px; height: 18px; fill: #fff; }
+#reel-lightbox.playing .icon-play { display: none; }
+#reel-lightbox:not(.playing) .icon-pause { display: none; }
+.lb-controls { padding: 0.75rem 0 0; }
+.lb-timeline {
+  display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.6rem;
+}
+.lb-time { font-size: 11px; letter-spacing: 0.06em; color: var(--grey2); white-space: nowrap; }
+.lb-scrubber {
+  flex: 1; -webkit-appearance: none; height: 2px;
+  background: rgba(255,255,255,0.15); border-radius: 2px; outline: none; cursor: pointer;
+}
+.lb-scrubber::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 10px; height: 10px;
+  border-radius: 50%; background: var(--ink); cursor: pointer;
+}
+.lb-scrubber::-moz-range-thumb {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--ink); border: none; cursor: pointer;
+}
+.lb-bottom-bar { display: flex; align-items: center; gap: 1rem; }
+.lb-icon-btn {
+  background: none; border: none; color: var(--grey2); cursor: pointer;
+  display: flex; align-items: center; padding: 0; transition: color 0.2s;
+  font-family: var(--sans); font-size: 11px; letter-spacing: 0.1em;
+}
+.lb-icon-btn:hover { color: var(--ink); }
+.lb-icon-btn svg { width: 17px; height: 17px; fill: currentColor; }
+.lb-speed {
+  margin-left: auto; font-size: 11px; letter-spacing: 0.1em; color: var(--grey2);
+  cursor: pointer; font-family: var(--sans); font-weight: 400;
+  transition: color 0.2s; background: none; border: none; padding: 0;
+}
+.lb-speed:hover { color: var(--ink); }
+.lb-info-col { flex: 1; min-width: 0; }
+.lb-counter { font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--grey); margin-bottom: 1rem; }
+.lb-category { font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--grey); margin-bottom: 0.5rem; }
+.lb-title {
+  font-family: var(--serif); font-weight: 300;
+  font-size: clamp(1.5rem, 3vw, 2.1rem); line-height: 1.15;
+  color: var(--ink); margin-bottom: 1rem;
+}
+.lb-desc { font-size: 0.84rem; font-weight: 300; color: var(--grey2); line-height: 1.85; margin-bottom: 1.8rem; max-width: 310px; }
+.lb-meta-table { border-top: 1px solid var(--line); padding-top: 1.4rem; display: flex; flex-direction: column; gap: 0.85rem; }
+.lb-meta-row { display: flex; gap: 1.5rem; align-items: baseline; }
+.lb-meta-key { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--grey); min-width: 58px; flex-shrink: 0; }
+.lb-meta-val { font-size: 0.84rem; font-weight: 300; color: var(--ink); }
+.lb-nav-row { display: flex; align-items: center; gap: 1rem; margin-top: 1.8rem; padding-top: 1.8rem; border-top: 1px solid var(--line); }
+.lb-nav-btn {
+  width: 36px; height: 36px; border: 1px solid var(--line); border-radius: 50%;
+  background: none; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: border-color 0.2s, color 0.2s; color: var(--grey2);
+}
+.lb-nav-btn:hover { border-color: var(--grey2); color: var(--ink); }
+.lb-nav-btn svg { width: 13px; height: 13px; fill: currentColor; }
+.lb-nav-hint { font-size: 10px; letter-spacing: 0.18em; color: var(--grey); text-transform: uppercase; }
+.lb-close {
+  position: fixed; top: 1.4rem; right: 1.8rem;
+  background: none; border: none; font-size: 1.2rem;
+  color: var(--grey2); cursor: pointer; z-index: 8001;
+  transition: color 0.2s; padding: 0.5rem; line-height: 1;
+}
+.lb-close:hover { color: var(--ink); }
+@media (max-width: 700px) {
+  .lb-inner { flex-direction: column; gap: 1.5rem; }
+  .lb-video-col { width: 100%; }
+  .lb-video-wrap { width: 100%; max-width: 280px; margin: 0 auto; }
+  #reel-lightbox { padding: 1rem; overflow-y: auto; align-items: flex-start; padding-top: 4rem; }
+}
+
 
 /* STATIC AMBIENT LIGHT — fixed, like Lightweight reference */
 .ambient-light {
@@ -728,12 +920,12 @@ footer {
   width: 1100px;
   height: 800px;
   background: radial-gradient(
-    ellipse 80% 70% at 50% 25%,
-rgba(255,255,255,0.022) 0%,
-rgba(255,255,255,0.010) 30%,
-rgba(255,255,255,0.004) 55%,
-rgba(255,255,255,0.001) 72%,
-transparent 85%
+    ellipse 60% 55% at 50% 30%,
+    rgba(255,255,255,0.048) 0%,
+    rgba(255,255,255,0.022) 25%,
+    rgba(255,255,255,0.009) 50%,
+    rgba(255,255,255,0.002) 70%,
+    transparent 80%
   );
 }
 
@@ -751,10 +943,6 @@ transparent 85%
   #hero, .container { padding-left: 1.5rem; padding-right: 1.5rem; }
   #hero { padding-top: 72px; }
   .hero-scroll { display: none; }
-  .services-header { grid-template-columns: 1fr; gap: 2rem; }
-  .service-row { grid-template-columns: 1fr; gap: 0.4rem; }
-  .srv-num { display: none; }
-  .srv-desc { text-align: left; font-size: 0.78rem; }
   .about-grid { grid-template-columns: 1fr; gap: 3rem; }
   .contact-inner { grid-template-columns: 1fr; gap: 4rem; }
   .contact-meta-stacked { flex-direction: row; flex-wrap: wrap; gap: 1.5rem 3rem; }
@@ -775,6 +963,64 @@ transparent 85%
 <div class="noise"></div>
 
 <!-- MODALS -->
+<!-- ── VIDEO LIGHTBOX ── -->
+<div id="reel-lightbox" role="dialog" aria-modal="true">
+  <button class="lb-close" id="lbClose">&#x2715;</button>
+  <div class="lb-inner">
+    <!-- Video -->
+    <div class="lb-video-col">
+      <div class="lb-video-wrap">
+        <video id="lbVideo" loop playsinline preload="metadata"></video>
+        <div class="lb-play-overlay" id="lbPlayOverlay">
+          <div class="lb-play-btn">
+            <svg class="icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            <svg class="icon-pause" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="lb-controls">
+        <div class="lb-timeline">
+          <span class="lb-time" id="lbCurrent">0:00</span>
+          <input class="lb-scrubber" id="lbScrubber" type="range" min="0" max="100" value="0" step="0.1">
+          <span class="lb-time" id="lbDuration">0:00</span>
+        </div>
+        <div class="lb-bottom-bar">
+          <button class="lb-icon-btn" id="lbPlayBtn" title="Play / Pause">
+            <svg class="icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            <svg class="icon-pause" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+          </button>
+          <button class="lb-icon-btn" id="lbMuteBtn" title="Mute / Unmute">
+            <svg id="lbVolIcon" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+          </button>
+          <button class="lb-speed" id="lbSpeedBtn">1×</button>
+        </div>
+      </div>
+    </div>
+    <!-- Info -->
+    <div class="lb-info-col">
+      <p class="lb-counter" id="lbCounter">01 / 05</p>
+      <p class="lb-category" id="lbCategory">Short-Form</p>
+      <h2 class="lb-title" id="lbTitle">Brand Reel Production</h2>
+      <p class="lb-desc" id="lbDesc">A showcase of precision editing and creative storytelling crafted for brand growth.</p>
+      <div class="lb-meta-table">
+        <div class="lb-meta-row"><span class="lb-meta-key">Role</span><span class="lb-meta-val" id="lbRole">Video Editor</span></div>
+        <div class="lb-meta-row"><span class="lb-meta-key">Tools</span><span class="lb-meta-val" id="lbTools">Premiere Pro · After Effects</span></div>
+        <div class="lb-meta-row"><span class="lb-meta-key">Client</span><span class="lb-meta-val" id="lbClient">Brand Project</span></div>
+        <div class="lb-meta-row"><span class="lb-meta-key">Length</span><span class="lb-meta-val" id="lbLength">—</span></div>
+      </div>
+      <div class="lb-nav-row">
+        <button class="lb-nav-btn" id="lbPrev">
+          <svg viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6z"/></svg>
+        </button>
+        <button class="lb-nav-btn" id="lbNext">
+          <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+        </button>
+        <span class="lb-nav-hint">← → to navigate</span>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="modal-overlay" id="modal-privacy">
   <div class="modal-box">
     <button class="modal-close" onclick="closeModal('modal-privacy')">&#x2715;</button>
@@ -866,45 +1112,54 @@ transparent 85%
 <!-- SERVICES -->
 <section id="services">
   <div class="container">
+
+    <!-- Header -->
     <div class="services-header">
       <div>
-        <p class="section-label reveal">What We Do</p>
-        <h2 class="services-title reveal d1">Every frame<br>with <em>intention.</em></h2>
+        <p class="section-label reveal">For Schools &amp; Institutions</p>
+        <h2 class="services-title reveal d1">Parents choose schools<br>they've already <em>seen.</em></h2>
       </div>
-      <p class="services-note reveal d2">We don't offer everything — we offer the things we are extraordinary at.</p>
+      <p class="services-note reveal d2">Before a parent calls you, they've already watched your competitor's reels. We make sure they see <em>you</em> first.</p>
     </div>
-    <div class="services-list">
-      <div class="service-row reveal">
-        <span class="srv-num">01</span>
-        <span class="srv-name">Reels &amp; Short-Form</span>
-        <span class="srv-desc">Scroll-stopping content for Instagram, YouTube Shorts &amp; TikTok — edited for maximum retention.</span>
+
+    <!-- 3 Core Blocks -->
+    <div class="core-blocks">
+      <div class="core-block reveal">
+        <span class="core-block-num">01</span>
+        <h3 class="core-block-title">Show Up Where<br>Parents Are Looking</h3>
+        <p class="core-block-desc">Every day, parents in your city are scrolling Instagram and YouTube. We put your school in front of them — consistently, professionally, every single month.</p>
       </div>
-      <div class="service-row reveal d1">
-        <span class="srv-num">02</span>
-        <span class="srv-name">YouTube Long-Form</span>
-        <span class="srv-desc">Full-length tutorials, vlogs &amp; knowledge videos edited and optimised for watch time.</span>
+      <div class="core-block reveal d2">
+        <span class="core-block-num">02</span>
+        <h3 class="core-block-title">Let Your School<br>Speak for Itself</h3>
+        <p class="core-block-desc">Morning assembly. Science projects. Sports day. Teacher moments. We turn your everyday school life into content that builds instant trust with new families.</p>
       </div>
-      <div class="service-row reveal d2">
-        <span class="srv-num">03</span>
-        <span class="srv-name">Motion Graphics</span>
-        <span class="srv-desc">Dynamic typography, animated intros, lower thirds — motion that makes your brand feel premium.</span>
-      </div>
-      <div class="service-row reveal d3">
-        <span class="srv-num">04</span>
-        <span class="srv-name">3D Animation</span>
-        <span class="srv-desc">Blender-powered 3D product visuals and animated reels that no competitor can replicate.</span>
-      </div>
-      <div class="service-row reveal d4">
-        <span class="srv-num">05</span>
-        <span class="srv-name">AI-Powered Workflows</span>
-        <span class="srv-desc">AI integrated into scripting, editing, and planning — faster output, sharper results.</span>
-      </div>
-      <div class="service-row reveal d5">
-        <span class="srv-num">06</span>
-        <span class="srv-name">Brand Visuals &amp; Strategy</span>
-        <span class="srv-desc">Thumbnails, social media planning, content calendars — the full pipeline handled for you.</span>
+      <div class="core-block reveal d3">
+        <span class="core-block-num">03</span>
+        <h3 class="core-block-title">More Visibility.<br>More Admissions.</h3>
+        <p class="core-block-desc">Families who feel they already know your school — call first, visit first, enrol first. Content is your school's reputation working 24/7.</p>
       </div>
     </div>
+
+    <!-- What We Do -->
+    <div class="what-we-do reveal">
+      <p class="what-we-do-label">How It Works</p>
+      <div class="wwd-grid">
+        <div class="wwd-item">
+          <h4 class="wwd-title">You Record.<br>We Handle Everything Else.</h4>
+          <p class="wwd-desc">No media team needed. No expensive shoots. Just simple daily moments from your phone — we turn them into high-performing reels.</p>
+        </div>
+        <div class="wwd-item">
+          <h4 class="wwd-title">We Tell You Exactly<br>What to Capture.</h4>
+          <p class="wwd-desc">A 2-minute morning clip. A classroom activity. A teacher moment. We give you a simple weekly shot list — you just press record.</p>
+        </div>
+        <div class="wwd-item">
+          <h4 class="wwd-title">15–20 Reels Every Month.<br>Rain or Shine.</h4>
+          <p class="wwd-desc">Admission season or not. We keep your school visible all year — so when March comes, parents already know your name.</p>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -1171,6 +1426,21 @@ document.querySelectorAll('.modal-overlay').forEach(m => {
 // Form
 function handleSubmit(e) {
   e.preventDefault();
+  const name    = document.getElementById('cf-name').value;
+  const email   = document.getElementById('cf-email').value;
+  const service = document.getElementById('cf-service').value;
+  const message = document.getElementById('cf-message').value;
+
+  const text = `Hi Edito Studios! 👋
+
+*Name:* ${name}
+*Email:* ${email}
+*Service:* ${service}
+*Message:* ${message}`;
+
+  const encoded = encodeURIComponent(text);
+  window.open(`https://wa.me/919817355071?text=${encoded}`, '_blank');
+
   document.getElementById('contact-form').style.display = 'none';
   document.getElementById('form-success').style.display = 'block';
 }
@@ -1245,135 +1515,190 @@ function handleSubmit(e) {
   }
   tick();
 
-  // ── Desktop hover ─────────────────────────
+  // ── Desktop: pause carousel on hover, NO video preview ───
   if (!('ontouchstart' in window)) {
-    stage.addEventListener('mouseenter', () => {
-      paused = true;
-      cursor.classList.add('visible');
-    });
-    stage.addEventListener('mouseleave', () => {
-      paused = false;
-      cursor.classList.remove('visible', 'paused');
-      if (hoveredCard) {
-        deactivateCard(hoveredCard);
-        hoveredCard = null;
-      }
-    });
-
-    stage.addEventListener('mousemove', e => {
-      // move custom cursor
-      cursor.style.left = e.clientX + 'px';
-      cursor.style.top  = e.clientY + 'px';
-
-      // find which card is under cursor
-      const el = document.elementFromPoint(e.clientX, e.clientY);
-      const card = el ? el.closest('.reel-card') : null;
-
-      if (card !== hoveredCard) {
-        if (hoveredCard) deactivateCard(hoveredCard);
-        hoveredCard = card || null;
-        if (hoveredCard) activateCard(hoveredCard);
-      }
-    });
+    stage.addEventListener('mouseenter', () => { paused = true; });
+    stage.addEventListener('mouseleave', () => { paused = false; });
   }
 
-  function activateCard(card) {
-    card.classList.add('active-reel');
-    const vid = card.querySelector('video');
-    if (vid && vid.src && vid.src !== window.location.href) {
-      vid.muted = false;
-      vid.play().catch(() => { vid.muted = true; vid.play(); });
-    }
-    // cursor icon = pause (since video is playing)
-    setCursorIcon('pause');
-    cursor.classList.add('paused');
-  }
+  // ── Mobile: just scroll, no tap-to-sound ──────────────────
+  // (handled by lightbox below)
 
-  function deactivateCard(card) {
-    card.classList.remove('active-reel');
-    const vid = card.querySelector('video');
-    if (vid) { vid.pause(); vid.muted = true; }
-    setCursorIcon('pause');
-    cursor.classList.remove('paused');
-  }
-
-  function setCursorIcon(type) {
-    if (type === 'pause') {
-      cursorIcon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
-    } else {
-      cursorIcon.innerHTML = '<path d="M8 5v14l11-7z"/>';
-    }
-  }
-
-  // ── Mobile: tap to toggle sound ───────────
-  if ('ontouchstart' in window) {
-    stage.addEventListener('click', e => {
-      const card = e.target.closest('.reel-card');
-      if (!card) return;
-      const vid = card.querySelector('video');
-      if (!vid) return;
-      if (vid.muted) {
-        // unmute this, mute all others
-        track.querySelectorAll('video').forEach(v => { v.muted = true; });
-        vid.muted = false;
-        card.classList.add('active-reel');
-      } else {
-        vid.muted = true;
-        card.classList.remove('active-reel');
-      }
-    });
-
-    // Auto-play all mobile videos muted
+  // On desktop, auto-play all muted (background feel)
+  if (!('ontouchstart' in window)) {
     track.querySelectorAll('video').forEach(vid => {
       vid.muted = true;
-      vid.loop  = true;
+      if (vid.src && vid.src !== window.location.href) vid.play().catch(() => {});
+    });
+  }
+  if ('ontouchstart' in window) {
+    track.querySelectorAll('video').forEach(vid => {
+      vid.muted = true; vid.loop = true;
       vid.setAttribute('playsinline', '');
-      if (vid.src && vid.src !== window.location.href) {
-        vid.play().catch(() => {});
-      }
+      if (vid.src && vid.src !== window.location.href) vid.play().catch(() => {});
     });
-
-    // Center-snap scroll: track which card is centered, add class
-    const snapObs = new IntersectionObserver(entries => {
-      entries.forEach(en => {
-        if (en.intersectionRatio > 0.6) {
-          // approximate center card
-        }
-      });
-    }, { threshold: 0.6, root: stage });
-  }
-
-  // On desktop, auto-play all muted (for reel background feel)
-  if (!('ontouchstart' in window)) {
-    track.querySelectorAll('video').forEach(vid => {
-      vid.muted = true;
-      if (vid.src && vid.src !== window.location.href) {
-        vid.play().catch(() => {});
-      }
-    });
-  }
-
-  // ── Mobile snap-center highlighting ───────
-  // Use IntersectionObserver to detect which card is most centered
-  if ('ontouchstart' in window) {
-    const centerObs = new IntersectionObserver(entries => {
-      entries.forEach(en => {
-        if (en.intersectionRatio >= 0.65) {
-          track.querySelectorAll('.reel-card').forEach(c => c.classList.remove('active-reel'));
-          en.target.classList.add('active-reel');
-          // autoplay the centered one muted
-          const vid = en.target.querySelector('video');
-          if (vid) { vid.muted = true; vid.play().catch(()=>{}); }
-        }
-      });
-    }, { threshold: 0.65, root: stage });
-    track.querySelectorAll('.reel-card:not(.reel-clone)').forEach(c => centerObs.observe(c));
   }
 
   // Rebuild on resize
-  window.addEventListener('resize', () => {
-    buildLoop();
-    initOffset();
+  window.addEventListener('resize', () => { buildLoop(); initOffset(); });
+
+})();
+
+/* ══════════════════════════════════════
+   VIDEO LIGHTBOX
+══════════════════════════════════════ */
+(function() {
+  const lb       = document.getElementById('reel-lightbox');
+  const lbClose  = document.getElementById('lbClose');
+  const lbVideo  = document.getElementById('lbVideo');
+  const lbPlayOverlay = document.getElementById('lbPlayOverlay');
+  const lbPlayBtn= document.getElementById('lbPlayBtn');
+  const lbMuteBtn= document.getElementById('lbMuteBtn');
+  const lbVolIcon= document.getElementById('lbVolIcon');
+  const lbScrubber=document.getElementById('lbScrubber');
+  const lbCurrent= document.getElementById('lbCurrent');
+  const lbDuration=document.getElementById('lbDuration');
+  const lbSpeedBtn=document.getElementById('lbSpeedBtn');
+  const lbPrev   = document.getElementById('lbPrev');
+  const lbNext   = document.getElementById('lbNext');
+  const lbCounter= document.getElementById('lbCounter');
+  const lbCategory=document.getElementById('lbCategory');
+  const lbTitle  = document.getElementById('lbTitle');
+  const lbDesc   = document.getElementById('lbDesc');
+  const lbRole   = document.getElementById('lbRole');
+  const lbTools  = document.getElementById('lbTools');
+  const lbClient = document.getElementById('lbClient');
+  const lbLength = document.getElementById('lbLength');
+
+  const SPEEDS = [0.5, 1, 1.5, 2];
+  let speedIdx = 1;
+
+  // Project data — fill in your real data here
+  const PROJECTS = [
+    { title: 'Brand Reel Production',    category: 'Short-Form',    desc: 'Scroll-stopping brand reel edited for maximum social impact and audience retention.', role: 'Video Editor', tools: 'Premiere Pro · After Effects', client: 'Brand Project', src: '' },
+    { title: 'YouTube Tutorial Series',  category: 'Long-Form',     desc: 'Full-length educational content scripted and edited for high watch-time retention.', role: 'Editor · Scripter', tools: 'Premiere Pro', client: 'Content Creator', src: '' },
+    { title: 'Product Visualisation',    category: '3D Animation',  desc: 'Looping 3D product render with studio lighting, glass refraction, and seamless rotation.', role: '3D · Motion', tools: 'Blender · After Effects', client: 'Product Brand', src: '' },
+    { title: 'Dynamic Motion Graphics',  category: 'Motion',        desc: 'Kinetic typography and animated transitions crafted for premium brand communication.', role: 'Motion Designer', tools: 'After Effects · Illustrator', client: 'Agency', src: '' },
+    { title: 'Multi-Platform Campaign',  category: 'Social',        desc: 'Cohesive content suite adapted for Instagram, YouTube, and TikTok simultaneously.', role: 'Video Editor · Strategist', tools: 'Premiere Pro · Photoshop', client: 'E-Commerce Brand', src: '' },
+  ];
+
+  let currentIdx = 0;
+
+  function fmtTime(s) {
+    if (!s || isNaN(s)) return '0:00';
+    const m = Math.floor(s / 60);
+    const sec = Math.floor(s % 60);
+    return m + ':' + (sec < 10 ? '0' : '') + sec;
+  }
+
+  function loadProject(idx) {
+    const p = PROJECTS[idx];
+    currentIdx = idx;
+    lbCounter.textContent  = String(idx + 1).padStart(2,'0') + ' / ' + String(PROJECTS.length).padStart(2,'0');
+    lbCategory.textContent = p.category;
+    lbTitle.textContent    = p.title;
+    lbDesc.textContent     = p.desc;
+    lbRole.textContent     = p.role;
+    lbTools.textContent    = p.tools;
+    lbClient.textContent   = p.client;
+    lbLength.textContent   = '—';
+    lbVideo.src = p.src || '';
+    lbVideo.currentTime = 0;
+    lbScrubber.value = 0;
+    lbCurrent.textContent = '0:00';
+    lbDuration.textContent = '0:00';
+    lbSpeedBtn.textContent = '1×';
+    speedIdx = 1;
+    lb.classList.remove('playing');
+    if (p.src) {
+      lbVideo.play().then(() => lb.classList.add('playing')).catch(() => {});
+    }
+  }
+
+  function openLightbox(idx) {
+    loadProject(idx);
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    lb.classList.remove('open');
+    lb.classList.remove('playing');
+    lbVideo.pause();
+    lbVideo.src = '';
+    document.body.style.overflow = '';
+  }
+
+  // Click on any reel card (original + clones)
+  document.getElementById('reelTrack').addEventListener('click', e => {
+    const card = e.target.closest('.reel-card');
+    if (!card) return;
+    const idx = parseInt(card.dataset.idx, 10);
+    if (!isNaN(idx)) openLightbox(idx);
+  });
+
+  lbClose.addEventListener('click', closeLightbox);
+  lb.addEventListener('click', e => { if (e.target === lb) closeLightbox(); });
+
+  // Play / pause
+  function togglePlay() {
+    if (lbVideo.paused) {
+      lbVideo.play().then(() => lb.classList.add('playing')).catch(() => {});
+    } else {
+      lbVideo.pause();
+      lb.classList.remove('playing');
+    }
+  }
+  lbPlayBtn.addEventListener('click', togglePlay);
+  lbPlayOverlay.addEventListener('click', togglePlay);
+
+  // Mute
+  lbMuteBtn.addEventListener('click', () => {
+    lbVideo.muted = !lbVideo.muted;
+    lbVolIcon.innerHTML = lbVideo.muted
+      ? '<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>'
+      : '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>';
+  });
+
+  // Speed
+  lbSpeedBtn.addEventListener('click', () => {
+    speedIdx = (speedIdx + 1) % SPEEDS.length;
+    lbVideo.playbackRate = SPEEDS[speedIdx];
+    lbSpeedBtn.textContent = SPEEDS[speedIdx] + '×';
+  });
+
+  // Timeline
+  lbVideo.addEventListener('timeupdate', () => {
+    if (!lbVideo.duration) return;
+    const pct = (lbVideo.currentTime / lbVideo.duration) * 100;
+    lbScrubber.value = pct;
+    lbCurrent.textContent = fmtTime(lbVideo.currentTime);
+  });
+  lbVideo.addEventListener('loadedmetadata', () => {
+    lbDuration.textContent = fmtTime(lbVideo.duration);
+    lbLength.textContent   = fmtTime(lbVideo.duration);
+  });
+  lbScrubber.addEventListener('input', () => {
+    if (lbVideo.duration) lbVideo.currentTime = (lbScrubber.value / 100) * lbVideo.duration;
+  });
+
+  // Nav
+  lbPrev.addEventListener('click', () => {
+    const idx = (currentIdx - 1 + PROJECTS.length) % PROJECTS.length;
+    loadProject(idx);
+  });
+  lbNext.addEventListener('click', () => {
+    const idx = (currentIdx + 1) % PROJECTS.length;
+    loadProject(idx);
+  });
+
+  // Keyboard
+  document.addEventListener('keydown', e => {
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft')  lbPrev.click();
+    if (e.key === 'ArrowRight') lbNext.click();
+    if (e.key === ' ') { e.preventDefault(); togglePlay(); }
   });
 
 })();
