@@ -216,14 +216,15 @@ nav {
 
 /* HERO */
 .hero-wrap { position: relative; overflow: hidden; }
-.hero-wrap::after {
-  content: '';
+.hero-video-bg {
   position: absolute;
-  bottom: 0; left: 0; right: 0;
-  height: 200px;
-  background: linear-gradient(to bottom, transparent, var(--bg));
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  opacity: 0.18;
   pointer-events: none;
-  z-index: 1;
 }
 #hero {
   min-height: 100vh;
@@ -1143,6 +1144,7 @@ footer {
 
 <!-- HERO -->
 <div class="hero-wrap">
+  <video class="hero-video-bg" src="main.mp4" autoplay muted loop playsinline></video>
   <div id="hero">
     <p class="hero-eyebrow">Video Editing Studio &nbsp;·&nbsp; India &nbsp;·&nbsp; Remote Worldwide</p>
     <h1 class="hero-headline">Your story<br>deserves to<br><em>be felt.</em></h1>
